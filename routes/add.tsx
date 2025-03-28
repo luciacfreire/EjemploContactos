@@ -10,6 +10,7 @@ type QueryParams = {
 
 type Data = {
   added?: boolean;
+  name?:string
 };
 
 export const handler: Handlers = {
@@ -24,8 +25,8 @@ export const handler: Handlers = {
     ) {
       try {
         await ContactsCollection.insertOne({ name, phone, email });
-        return ctx.render({ added: true });
-      } catch (e) {
+        return ctx.render({ added: true, name });
+      } catch (_e) {
         return new Response("Error adding to DB", { status: 500 });
       }
     }
@@ -36,7 +37,7 @@ export const handler: Handlers = {
 const Page = (props: PageProps<Data>) => (
   <>
     <AddContact />
-    (props.data?.added && <p>Contacto añadido</p>)
+    {props.data?.added && <p>Contacto de {props.data.name} añadido</p>}
   </>
 );
 
